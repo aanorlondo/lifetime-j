@@ -1,44 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compteur de vie 👶</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compteur de vie 👶</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1 class="title">Depuis ta venue au monde...</h1>
 
-  <main class="container">
-    <h1 class="title">Depuis ta venue au monde... ❤️</h1>
+      <!-- Cœur sur sa propre ligne -->
+      <div class="heart-container">
+        <span id="heart">❤️</span>
+      </div>
 
-    <div class="grid">
-      <div class="card">
-        <span class="number" id="years">0</span>
-        <span class="label">Ans</span>
+      <div class="grid">
+        <div class="card">
+          <span class="number" id="years">0</span>
+          <span class="label">Ans</span>
+        </div>
+        <div class="card">
+          <span class="number" id="months">0</span>
+          <span class="label">Mois</span>
+        </div>
+        <div class="card">
+          <span class="number" id="days">0</span>
+          <span class="label">Jours</span>
+        </div>
+        <div class="card">
+          <span class="number" id="hours">0</span>
+          <span class="label">Heures</span>
+        </div>
+        <div class="card">
+          <span class="number" id="minutes">0</span>
+          <span class="label">Minutes</span>
+        </div>
+        <div class="card">
+          <span class="number" id="seconds">0</span>
+          <span class="label">Secondes</span>
+        </div>
       </div>
-      <div class="card">
-        <span class="number" id="months">0</span>
-        <span class="label">Mois</span>
-      </div>
-      <div class="card">
-        <span class="number" id="days">0</span>
-        <span class="label">Jours</span>
-      </div>
-      <div class="card">
-        <span class="number" id="hours">0</span>
-        <span class="label">Heures</span>
-      </div>
-      <div class="card">
-        <span class="number" id="minutes">0</span>
-        <span class="label">Minutes</span>
-      </div>
-      <div class="card">
-        <span class="number" id="seconds">0</span>
-        <span class="label">Secondes</span>
-      </div>
-    </div>
-  </main>
+    </main>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
