@@ -1,7 +1,10 @@
 const DATE_NAISSANCE = new Date("2026-08-24T12:48:30");
 
+// 🔗 Liens audio direct
 const METAL_SOUND_URL =
   "https://www.myinstants.com/media/sounds/chopper-alert-sample-91019-3.mp3";
+const JAZZ_SOUND_URL =
+  "https://www.myinstants.com/media/sounds/avatar-song-lofi.mp3";
 
 // --- ⏰ COMPTEUR DE TEMPS ---
 function updateCounter() {
@@ -45,6 +48,7 @@ setInterval(updateCounter, 1000);
 let audioCtx = null;
 let musicBoxTimer = null;
 let isMusicBoxPlaying = false;
+let currentAudioTrack = null;
 
 const LULLABY_NOTES = [
   523.25, 659.25, 783.99, 659.25, 523.25, 659.25, 783.99, 587.33, 698.46,
@@ -99,17 +103,35 @@ function stopMusicBox() {
   }
 }
 
+function stopExternalAudio() {
+  if (currentAudioTrack) {
+    currentAudioTrack.pause();
+    currentAudioTrack.currentTime = 0;
+    currentAudioTrack = null;
+  }
+}
+
 document.body.addEventListener(
   "click",
   () => {
-    if (!isMusicBoxPlaying && clickCount % 6 !== 0) {
+    if (!isMusicBoxPlaying && clickCount % 10 !== 5 && clickCount % 10 !== 8) {
       startMusicBox();
     }
   },
   { once: false },
 );
 
-// --- 🎨 INTERACTIVITÉ, THEMES & TAILLES DE POLICES ---
+// --- 🎨 INTERACTIVITÉ, THEMES, PHRASES & EASTER EGGS ---
+
+// Textes poétiques tournants pour le mode mignon/pastel
+const PASTEL_TITLES = [
+  "Depuis ton premier souffle...",
+  "L'écho des secondes depuis toi...",
+  "Depuis ta venue au monde...",
+  "Des instants & des secondes...",
+  "Le temps s'égrène depuis toi...",
+  "Chaque seconde avec toi...",
+];
 
 const NUMBER_PALETTES = [
   "linear-gradient(135deg, #ff80bf 0%, #ffaa80 35%, #ffd11a 65%, #66cc99 100%)",
@@ -140,7 +162,6 @@ const CARD_BORDER_SHAPES = [
   "70% 30% 50% 50% / 30% 60% 40% 70%",
 ];
 
-// 🔤 Configuration spécifique par police pour éviter qu'elle ne soit rognée
 const FONTS_CONFIG = [
   {
     font: "'Fredoka', cursive, sans-serif",
@@ -153,7 +174,7 @@ const FONTS_CONFIG = [
     titleSize: "2.6rem",
     numSize: "2.4rem",
     labelSize: "0.95rem",
-  }, // Gaegu ajustée plus grande
+  },
   {
     font: "'Sniglet', cursive, sans-serif",
     titleSize: "2.2rem",
@@ -165,7 +186,7 @@ const FONTS_CONFIG = [
     titleSize: "2.6rem",
     numSize: "2.4rem",
     labelSize: "0.95rem",
-  }, // Patrick Hand ajustée plus grande
+  },
   {
     font: "'Comic Neue', cursive, sans-serif",
     titleSize: "2.3rem",
@@ -206,21 +227,88 @@ heartEl.addEventListener("click", (e) => {
   void heartEl.offsetWidth;
   heartEl.classList.add("pop-anim");
 
-  // 🤘 EASTER EGG METAL (6ème clic)
-  if (clickCount % 6 === 0) {
+  stopExternalAudio();
+
+  const stepInCycle = clickCount % 10;
+
+  // 🎷 1. EASTER EGG JAZZ (5ème clic)
+  if (stepInCycle === 5) {
     stopMusicBox();
 
     try {
-      const metalAudio = new Audio(METAL_SOUND_URL);
-      metalAudio.volume = 0.8;
-      metalAudio.play().catch((err) => console.log("Audio block:", err));
+      currentAudioTrack = new Audio(JAZZ_SOUND_URL);
+      currentAudioTrack.volume = 0.8;
+      currentAudioTrack.play().catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
+
+    heartEl.textContent = "🎷";
+    heartEl.style.filter = "none";
+
+    // Titre dédié au Jazz 🎷
+    titleEl.textContent = "Depuis tes premières notes...";
+    titleEl.className = "title jazz-style";
+
+    document.documentElement.style.setProperty("--bg-cream", "#0b0d19");
+    document.documentElement.style.setProperty("--bg-blob-1", "#2d1b4e");
+    document.documentElement.style.setProperty("--bg-blob-2", "#182a4a");
+    document.documentElement.style.setProperty(
+      "--current-font",
+      "'Playfair Display', serif",
+    );
+    document.documentElement.style.setProperty("--title-size", "2.4rem");
+    document.documentElement.style.setProperty("--num-size", "2.1rem");
+    document.documentElement.style.setProperty("--label-size", "0.85rem");
+
+    document.documentElement.style.setProperty(
+      "--card-bg",
+      "rgba(20, 24, 45, 0.85)",
+    );
+    document.documentElement.style.setProperty(
+      "--card-border",
+      "rgba(212, 175, 55, 0.4)",
+    );
+    document.documentElement.style.setProperty("--text-muted", "#d4af37");
+    document.documentElement.style.setProperty("--stroke-dark", "#000000");
+
+    numberEls.forEach((el) => {
+      el.style.background =
+        "linear-gradient(135deg, #ffe082 0%, #d4af37 50%, #ffb300 100%)";
+      el.style.webkitBackgroundClip = "text";
+      el.style.webkitTextFillColor = "transparent";
+    });
+
+    cardEls.forEach((card, index) => {
+      setTimeout(() => {
+        card.style.borderRadius = "16px";
+        card.classList.remove("card-bounce");
+        void card.offsetWidth;
+        card.classList.add("card-bounce");
+      }, index * 40);
+    });
+
+    return;
+  }
+
+  // 🤘 2. EASTER EGG METAL (8ème clic)
+  if (stepInCycle === 8) {
+    stopMusicBox();
+
+    try {
+      currentAudioTrack = new Audio(METAL_SOUND_URL);
+      currentAudioTrack.volume = 0.8;
+      currentAudioTrack.play().catch((err) => console.log(err));
     } catch (err) {
       console.log(err);
     }
 
     heartEl.textContent = "🤘";
     heartEl.style.filter = "none";
-    titleEl.classList.add("metallica-style");
+
+    // Titre dédié au Metal 🤘
+    titleEl.textContent = "Depuis ton premier growl !";
+    titleEl.className = "title metallica-style";
 
     document.documentElement.style.setProperty("--bg-cream", "#0a0a0c");
     document.documentElement.style.setProperty("--bg-blob-1", "#880000");
@@ -263,13 +351,16 @@ heartEl.addEventListener("click", (e) => {
     return;
   }
 
-  // 🔄 RETOUR PASTEL & BERCEUSE
+  // 🔄 3. RETOUR EN MODE PASTEL & BERCEUSE
   startMusicBox();
 
   heartEl.textContent = "❤️";
-  titleEl.classList.remove("metallica-style");
+  titleEl.className = "title";
 
   currentThemeIndex = (currentThemeIndex + 1) % BG_THEMES.length;
+
+  // Changement dynamique du titre pastel
+  titleEl.textContent = PASTEL_TITLES[currentThemeIndex % PASTEL_TITLES.length];
 
   const newNumPalette =
     NUMBER_PALETTES[currentThemeIndex % NUMBER_PALETTES.length];
@@ -280,7 +371,6 @@ heartEl.addEventListener("click", (e) => {
   const newHeartFilter =
     HEART_FILTERS[currentThemeIndex % HEART_FILTERS.length];
 
-  // Application des variables de taille + police
   document.documentElement.style.setProperty("--bg-cream", newBgTheme.bg);
   document.documentElement.style.setProperty("--bg-blob-1", newBgTheme.blob1);
   document.documentElement.style.setProperty("--bg-blob-2", newBgTheme.blob2);
