@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+
 :root {
-  --bg-dark: #0f111a;
-  --card-bg: rgba(26, 29, 45, 0.65);
-  --card-border: rgba(255, 255, 255, 0.12);
-  --text-main: #eceff4;
-  --text-muted: #8892b0;
-  --accent-color: #64ffda;
-  --accent-glow: rgba(100, 255, 218, 0.15);
+  /* Palette Crème & Moutarde */
+  --bg-cream: #fbf6ec;
+  --bg-blob-1: #f3e5ab; /* Moutarde douce */
+  --bg-blob-2: #e8d5b7; /* Beurre chaud */
+  
+  --card-bg: rgba(255, 250, 240, 0.75);
+  --card-border: rgba(180, 160, 120, 0.25);
+  --text-muted: #8c7b6c;
 }
 
 * {
@@ -15,9 +18,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-dark);
-  color: var(--text-main);
+  font-family: 'Fredoka', cursive, sans-serif;
+  background-color: var(--bg-cream);
+  color: #5c4f43;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -27,41 +30,37 @@ body {
   position: relative;
 }
 
-/* 🌀 Arrière-plan abstrait animé (sobre & vivant) */
+/* 🌀 Arrière-plan moutarde doux & vivant */
 body::before,
 body::after {
   content: "";
   position: absolute;
-  width: 350px;
-  height: 350px;
-  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Forme organique/abstraite */
-  filter: blur(90px);
+  width: 380px;
+  height: 380px;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  filter: blur(80px);
   z-index: -1;
-  opacity: 0.45;
-  animation: float 12s infinite alternate ease-in-out;
+  opacity: 0.7;
+  animation: float 14s infinite alternate ease-in-out;
 }
 
 body::before {
-  background: #434c5e;
-  top: 10%;
-  left: 15%;
+  background: var(--bg-blob-1);
+  top: 8%;
+  left: 10%;
 }
 
 body::after {
-  background: #2e3440;
-  bottom: 10%;
-  right: 15%;
-  animation-delay: -6s;
-  animation-duration: 16s;
+  background: var(--bg-blob-2);
+  bottom: 8%;
+  right: 10%;
+  animation-delay: -7s;
+  animation-duration: 18s;
 }
 
 @keyframes float {
-  0% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  100% {
-    transform: translate(30px, -40px) rotate(45deg) scale(1.1);
-  }
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  100% { transform: translate(25px, -35px) rotate(35deg) scale(1.08); }
 }
 
 .container {
@@ -72,14 +71,18 @@ body::after {
   max-width: 650px;
 }
 
+/* 🎨 Titre aux couleurs pastel dégradées */
 .title {
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: 2px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
   margin-bottom: 35px;
   text-align: center;
-  color: var(--text-muted);
-  text-transform: uppercase;
+  
+  /* Effet multicolore pastel sur le texte */
+  background: linear-gradient(90deg, #ff9aa2, #ffb7b2, #ffdac1, #e2f0cb, #b5ead7, #c7ceea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .grid {
@@ -89,41 +92,45 @@ body::after {
   width: 100%;
 }
 
-/* 🎨 Cartes avec style sombre + contours légèrement "sketchy" */
+/* 🎨 Cartes fond crème & bordure sketchy */
 .card {
   background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 24px 12px;
   text-align: center;
   
-  /* Effet bordure imperceptiblement asymétrique/croquis */
-  border: 1px solid var(--card-border);
+  /* Contour style croquis */
+  border: 2px solid var(--card-border);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px rgba(160, 140, 100, 0.08);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: var(--accent-color);
-  box-shadow: 0 12px 30px var(--accent-glow);
+  border-color: #d4a373;
 }
 
+/* 🌈 Chiffres multicolores pastel */
 .number {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--accent-color);
+  font-size: 2.4rem;
+  font-weight: 600;
   display: block;
-  font-variant-numeric: tabular-nums; /* Évite que la grille saute quand les chiffres changent */
+  font-variant-numeric: tabular-nums;
+  
+  /* Dégradé pastel arc-en-ciel sur les chiffres */
+  background: linear-gradient(135deg, #ff9aa2 0%, #ffdac1 35%, #b5ead7 70%, #c7ceea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .label {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-muted);
-  margin-top: 8px;
+  margin-top: 6px;
   display: block;
 }
