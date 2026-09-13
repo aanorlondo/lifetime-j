@@ -42,7 +42,7 @@ function updateCounter() {
 updateCounter();
 setInterval(updateCounter, 1000);
 
-// --- 🎨 INTERACTIVITÉ & FORMES SKETCHY AVEC BORDURES ---
+// --- 🎨 INTERACTIVITÉ, COULEURS & POLICES ---
 
 const NUMBER_PALETTES = [
   "linear-gradient(135deg, #ff80bf 0%, #ffaa80 35%, #ffd11a 65%, #66cc99 100%)",
@@ -64,20 +64,23 @@ const BG_THEMES = [
   { bg: "#fff8e7", blob1: "#ffe0b2", blob2: "#ffcc80" }, // Pêche
 ];
 
-// Variétés de formes sketchy préservant 100% la bordure
 const CARD_BORDER_SHAPES = [
-  // 1. Carré croquis original
   "255px 15px 225px 15px/15px 225px 15px 255px",
-  // 2. Nuage / Galet très arrondi
   "50% 50% 40% 40% / 60% 60% 40% 40%",
-  // 3. Capsule diagonale / Œuf sketchy
   "60% 40% 30% 70% / 60% 30% 70% 40%",
-  // 4. Cercle parfait
   "50%",
-  // 5. Losange/Bulle étirée
   "40% 60% 70% 30% / 50% 30% 70% 50%",
-  // 6. Forme haricot / patate douce
   "70% 30% 50% 50% / 30% 60% 40% 70%",
+];
+
+// Liste des polices à alterner
+const FONTS = [
+  "'Fredoka', cursive, sans-serif",
+  "'Gaegu', cursive, sans-serif",
+  "'Sniglet', cursive, sans-serif",
+  "'Patrick Hand', cursive, sans-serif",
+  "'Comic Neue', cursive, sans-serif",
+  "'Concert One', cursive, sans-serif",
 ];
 
 const HEART_FILTERS = [
@@ -102,7 +105,7 @@ heartEl.addEventListener("click", () => {
   void heartEl.offsetWidth;
   heartEl.classList.add("pop-anim");
 
-  // 2. Index du nouveau thème
+  // 2. Prochain index
   currentThemeIndex = (currentThemeIndex + 1) % BG_THEMES.length;
 
   const newNumPalette =
@@ -110,13 +113,15 @@ heartEl.addEventListener("click", () => {
   const newBgTheme = BG_THEMES[currentThemeIndex];
   const newRadius =
     CARD_BORDER_SHAPES[currentThemeIndex % CARD_BORDER_SHAPES.length];
+  const newFont = FONTS[currentThemeIndex % FONTS.length];
   const newHeartFilter =
     HEART_FILTERS[currentThemeIndex % HEART_FILTERS.length];
 
-  // 3. Couleurs de fond
+  // 3. Application des variables CSS (Fond & Police)
   document.documentElement.style.setProperty("--bg-cream", newBgTheme.bg);
   document.documentElement.style.setProperty("--bg-blob-1", newBgTheme.blob1);
   document.documentElement.style.setProperty("--bg-blob-2", newBgTheme.blob2);
+  document.documentElement.style.setProperty("--current-font", newFont);
 
   // 4. Couleur du cœur
   heartEl.style.filter = newHeartFilter;
@@ -128,13 +133,10 @@ heartEl.addEventListener("click", () => {
     el.style.webkitTextFillColor = "transparent";
   });
 
-  // 6. Métamorphose de la forme + Animation
+  // 6. Forme & Rebond des cartes
   cardEls.forEach((card, index) => {
     setTimeout(() => {
-      // Met à jour uniquement la forme des coins sans détruire la bordure
       card.style.borderRadius = newRadius;
-
-      // Rebond
       card.classList.remove("card-bounce");
       void card.offsetWidth;
       card.classList.add("card-bounce");
