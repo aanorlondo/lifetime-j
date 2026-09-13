@@ -6,9 +6,10 @@
   --bg-blob-1: #f3e5ab; /* Moutarde douce */
   --bg-blob-2: #e8d5b7; /* Beurre chaud */
   
-  --card-bg: rgba(255, 250, 240, 0.75);
-  --card-border: rgba(180, 160, 120, 0.25);
-  --text-muted: #8c7b6c;
+  --card-bg: rgba(255, 250, 240, 0.85);
+  --card-border: rgba(140, 110, 80, 0.25);
+  --text-muted: #7c6853;
+  --stroke-dark: #3a2e2b; /* Brun/chocolat foncé pour les contours */
 }
 
 * {
@@ -20,7 +21,7 @@
 body {
   font-family: 'Fredoka', cursive, sans-serif;
   background-color: var(--bg-cream);
-  color: #5c4f43;
+  color: #3a2e2b;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -71,7 +72,7 @@ body::after {
   max-width: 650px;
 }
 
-/* 🎨 Titre aux couleurs pastel dégradées */
+/* 🎨 Titre arc-en-ciel avec contour foncé */
 .title {
   font-size: 1.8rem;
   font-weight: 600;
@@ -79,10 +80,14 @@ body::after {
   margin-bottom: 35px;
   text-align: center;
   
-  /* Effet multicolore pastel sur le texte */
-  background: linear-gradient(90deg, #ff9aa2, #ffb7b2, #ffdac1, #e2f0cb, #b5ead7, #c7ceea);
+  /* Arc-en-ciel pastel */
+  background: linear-gradient(90deg, #ff80bf, #ff9980, #ffd11a, #66cc99, #80b3ff, #b380ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  /* Contour foncé & ombre pour la lisibilité */
+  -webkit-text-stroke: 1.2px var(--stroke-dark);
+  filter: drop-shadow(2px 2px 0px rgba(58, 46, 43, 0.15));
 }
 
 .grid {
@@ -104,26 +109,30 @@ body::after {
   border: 2px solid var(--card-border);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   
-  box-shadow: 0 10px 25px rgba(160, 140, 100, 0.08);
+  box-shadow: 0 10px 25px rgba(120, 90, 60, 0.08);
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: #d4a373;
+  border-color: var(--stroke-dark);
 }
 
-/* 🌈 Chiffres multicolores pastel */
+/* 🌈 Chiffres multicolores pastel avec contour chocolat */
 .number {
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 600;
   display: block;
   font-variant-numeric: tabular-nums;
   
-  /* Dégradé pastel arc-en-ciel sur les chiffres */
-  background: linear-gradient(135deg, #ff9aa2 0%, #ffdac1 35%, #b5ead7 70%, #c7ceea 100%);
+  /* Dégradé pastel soutenu */
+  background: linear-gradient(135deg, #ff80bf 0%, #ffaa80 35%, #ffd11a 65%, #66cc99 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  /* Contour foncé pour faire ressortir les zones jaunes/claires */
+  -webkit-text-stroke: 1.5px var(--stroke-dark);
+  filter: drop-shadow(2px 2px 0px rgba(58, 46, 43, 0.12));
 }
 
 .label {
@@ -131,6 +140,7 @@ body::after {
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-muted);
+  font-weight: 600;
   margin-top: 6px;
   display: block;
 }
