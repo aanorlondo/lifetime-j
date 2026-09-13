@@ -1,13 +1,15 @@
 const DATE_NAISSANCE = new Date("2026-08-24T12:48:30");
 
+const METAL_SOUND_URL =
+  "https://www.myinstants.com/media/sounds/chopper-alert-sample-91019-3.mp3";
+
+// --- ⏰ COMPTEUR DE TEMPS ---
 function updateCounter() {
   const now = new Date();
 
-  // Calcul des années et mois calendaires réels
   let years = now.getFullYear() - DATE_NAISSANCE.getFullYear();
   let months = now.getMonth() - DATE_NAISSANCE.getMonth();
 
-  // Ajustement des années/mois si la date du mois courant n'est pas encore atteinte
   let dateDiff = now.getDate() - DATE_NAISSANCE.getDate();
   if (dateDiff < 0) {
     months--;
@@ -17,7 +19,6 @@ function updateCounter() {
     months += 12;
   }
 
-  // Calcul du reste du temps pour jours, heures, minutes, secondes
   const anchorDate = new Date(DATE_NAISSANCE);
   anchorDate.setFullYear(anchorDate.getFullYear() + years);
   anchorDate.setMonth(anchorDate.getMonth() + months);
@@ -29,7 +30,6 @@ function updateCounter() {
   const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  // Mise à jour du DOM
   document.getElementById("years").textContent = years;
   document.getElementById("months").textContent = months;
   document.getElementById("days").textContent = days;
@@ -38,11 +38,78 @@ function updateCounter() {
   document.getElementById("seconds").textContent = seconds;
 }
 
-// Mise à jour immédiate puis chaque seconde
 updateCounter();
 setInterval(updateCounter, 1000);
 
-// --- 🎨 INTERACTIVITÉ, COULEURS & POLICES ---
+// --- 🎵 GESTION DE LA BOÎTE À MUSIQUE ---
+let audioCtx = null;
+let musicBoxTimer = null;
+let isMusicBoxPlaying = false;
+
+const LULLABY_NOTES = [
+  523.25, 659.25, 783.99, 659.25, 523.25, 659.25, 783.99, 587.33, 698.46,
+  783.99, 698.46, 587.33, 698.46, 783.99, 659.25, 783.99, 1046.5, 783.99,
+  659.25, 783.99, 1046.5,
+];
+let noteIndex = 0;
+
+function playMusicBoxNote() {
+  if (!isMusicBoxPlaying || !audioCtx) return;
+
+  const freq = LULLABY_NOTES[noteIndex];
+  noteIndex = (noteIndex + 1) % LULLABY_NOTES.length;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+  gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 1.2);
+}
+
+function startMusicBox() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContextClass();
+  }
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+
+  isMusicBoxPlaying = true;
+  if (!musicBoxTimer) {
+    musicBoxTimer = setInterval(playMusicBoxNote, 500);
+  }
+}
+
+function stopMusicBox() {
+  isMusicBoxPlaying = false;
+  if (musicBoxTimer) {
+    clearInterval(musicBoxTimer);
+    musicBoxTimer = null;
+  }
+}
+
+document.body.addEventListener(
+  "click",
+  () => {
+    if (!isMusicBoxPlaying && clickCount % 6 !== 0) {
+      startMusicBox();
+    }
+  },
+  { once: false },
+);
+
+// --- 🎨 INTERACTIVITÉ, THEMES & TAILLES DE POLICES ---
 
 const NUMBER_PALETTES = [
   "linear-gradient(135deg, #ff80bf 0%, #ffaa80 35%, #ffd11a 65%, #66cc99 100%)",
@@ -56,12 +123,12 @@ const NUMBER_PALETTES = [
 ];
 
 const BG_THEMES = [
-  { bg: "#fbf6ec", blob1: "#f3e5ab", blob2: "#e8d5b7" }, // Crème & Moutarde
-  { bg: "#f4f9f4", blob1: "#c8e6c9", blob2: "#a5d6a7" }, // Vert menthe
-  { bg: "#f7f0f5", blob1: "#e1bee7", blob2: "#ce93d8" }, // Lavande
-  { bg: "#fff5f5", blob1: "#ffcdd2", blob2: "#ef9a9a" }, // Rose poudré
-  { bg: "#f0f4f8", blob1: "#bbdefb", blob2: "#90caf9" }, // Bleu ciel
-  { bg: "#fff8e7", blob1: "#ffe0b2", blob2: "#ffcc80" }, // Pêche
+  { bg: "#fbf6ec", blob1: "#f3e5ab", blob2: "#e8d5b7" },
+  { bg: "#f4f9f4", blob1: "#c8e6c9", blob2: "#a5d6a7" },
+  { bg: "#f7f0f5", blob1: "#e1bee7", blob2: "#ce93d8" },
+  { bg: "#fff5f5", blob1: "#ffcdd2", blob2: "#ef9a9a" },
+  { bg: "#f0f4f8", blob1: "#bbdefb", blob2: "#90caf9" },
+  { bg: "#fff8e7", blob1: "#ffe0b2", blob2: "#ffcc80" },
 ];
 
 const CARD_BORDER_SHAPES = [
@@ -73,14 +140,44 @@ const CARD_BORDER_SHAPES = [
   "70% 30% 50% 50% / 30% 60% 40% 70%",
 ];
 
-// Liste des polices à alterner
-const FONTS = [
-  "'Fredoka', cursive, sans-serif",
-  "'Gaegu', cursive, sans-serif",
-  "'Sniglet', cursive, sans-serif",
-  "'Patrick Hand', cursive, sans-serif",
-  "'Comic Neue', cursive, sans-serif",
-  "'Concert One', cursive, sans-serif",
+// 🔤 Configuration spécifique par police pour éviter qu'elle ne soit rognée
+const FONTS_CONFIG = [
+  {
+    font: "'Fredoka', cursive, sans-serif",
+    titleSize: "2.2rem",
+    numSize: "2rem",
+    labelSize: "0.8rem",
+  },
+  {
+    font: "'Gaegu', cursive, sans-serif",
+    titleSize: "2.6rem",
+    numSize: "2.4rem",
+    labelSize: "0.95rem",
+  }, // Gaegu ajustée plus grande
+  {
+    font: "'Sniglet', cursive, sans-serif",
+    titleSize: "2.2rem",
+    numSize: "2rem",
+    labelSize: "0.8rem",
+  },
+  {
+    font: "'Patrick Hand', cursive, sans-serif",
+    titleSize: "2.6rem",
+    numSize: "2.4rem",
+    labelSize: "0.95rem",
+  }, // Patrick Hand ajustée plus grande
+  {
+    font: "'Comic Neue', cursive, sans-serif",
+    titleSize: "2.3rem",
+    numSize: "2.1rem",
+    labelSize: "0.85rem",
+  },
+  {
+    font: "'Concert One', cursive, sans-serif",
+    titleSize: "2.2rem",
+    numSize: "1.9rem",
+    labelSize: "0.8rem",
+  },
 ];
 
 const HEART_FILTERS = [
@@ -94,18 +191,84 @@ const HEART_FILTERS = [
 ];
 
 const heartEl = document.getElementById("heart");
+const titleEl = document.querySelector(".title");
 const numberEls = document.querySelectorAll(".number");
 const cardEls = document.querySelectorAll(".card");
 
 let currentThemeIndex = 0;
+let clickCount = 0;
 
-heartEl.addEventListener("click", () => {
-  // 1. Animation du cœur
+heartEl.addEventListener("click", (e) => {
+  e.stopPropagation();
+  clickCount++;
+
   heartEl.classList.remove("pop-anim");
   void heartEl.offsetWidth;
   heartEl.classList.add("pop-anim");
 
-  // 2. Prochain index
+  // 🤘 EASTER EGG METAL (6ème clic)
+  if (clickCount % 6 === 0) {
+    stopMusicBox();
+
+    try {
+      const metalAudio = new Audio(METAL_SOUND_URL);
+      metalAudio.volume = 0.8;
+      metalAudio.play().catch((err) => console.log("Audio block:", err));
+    } catch (err) {
+      console.log(err);
+    }
+
+    heartEl.textContent = "🤘";
+    heartEl.style.filter = "none";
+    titleEl.classList.add("metallica-style");
+
+    document.documentElement.style.setProperty("--bg-cream", "#0a0a0c");
+    document.documentElement.style.setProperty("--bg-blob-1", "#880000");
+    document.documentElement.style.setProperty("--bg-blob-2", "#330000");
+    document.documentElement.style.setProperty(
+      "--current-font",
+      "'New Rocker', cursive, sans-serif",
+    );
+    document.documentElement.style.setProperty("--title-size", "2.5rem");
+    document.documentElement.style.setProperty("--num-size", "2rem");
+    document.documentElement.style.setProperty("--label-size", "0.85rem");
+
+    document.documentElement.style.setProperty(
+      "--card-bg",
+      "rgba(18, 18, 22, 0.95)",
+    );
+    document.documentElement.style.setProperty(
+      "--card-border",
+      "rgba(230, 30, 30, 0.7)",
+    );
+    document.documentElement.style.setProperty("--text-muted", "#ff4d4d");
+    document.documentElement.style.setProperty("--stroke-dark", "#000000");
+
+    numberEls.forEach((el) => {
+      el.style.background =
+        "linear-gradient(180deg, #ffffff 0%, #cbd5e1 45%, #475569 50%, #0f172a 100%)";
+      el.style.webkitBackgroundClip = "text";
+      el.style.webkitTextFillColor = "transparent";
+    });
+
+    cardEls.forEach((card, index) => {
+      setTimeout(() => {
+        card.style.borderRadius = "6px 22px 6px 22px";
+        card.classList.remove("card-bounce");
+        void card.offsetWidth;
+        card.classList.add("card-bounce");
+      }, index * 40);
+    });
+
+    return;
+  }
+
+  // 🔄 RETOUR PASTEL & BERCEUSE
+  startMusicBox();
+
+  heartEl.textContent = "❤️";
+  titleEl.classList.remove("metallica-style");
+
   currentThemeIndex = (currentThemeIndex + 1) % BG_THEMES.length;
 
   const newNumPalette =
@@ -113,27 +276,44 @@ heartEl.addEventListener("click", () => {
   const newBgTheme = BG_THEMES[currentThemeIndex];
   const newRadius =
     CARD_BORDER_SHAPES[currentThemeIndex % CARD_BORDER_SHAPES.length];
-  const newFont = FONTS[currentThemeIndex % FONTS.length];
+  const fontConfig = FONTS_CONFIG[currentThemeIndex % FONTS_CONFIG.length];
   const newHeartFilter =
     HEART_FILTERS[currentThemeIndex % HEART_FILTERS.length];
 
-  // 3. Application des variables CSS (Fond & Police)
+  // Application des variables de taille + police
   document.documentElement.style.setProperty("--bg-cream", newBgTheme.bg);
   document.documentElement.style.setProperty("--bg-blob-1", newBgTheme.blob1);
   document.documentElement.style.setProperty("--bg-blob-2", newBgTheme.blob2);
-  document.documentElement.style.setProperty("--current-font", newFont);
+  document.documentElement.style.setProperty("--current-font", fontConfig.font);
+  document.documentElement.style.setProperty(
+    "--title-size",
+    fontConfig.titleSize,
+  );
+  document.documentElement.style.setProperty("--num-size", fontConfig.numSize);
+  document.documentElement.style.setProperty(
+    "--label-size",
+    fontConfig.labelSize,
+  );
 
-  // 4. Couleur du cœur
+  document.documentElement.style.setProperty(
+    "--card-bg",
+    "rgba(255, 250, 240, 0.85)",
+  );
+  document.documentElement.style.setProperty(
+    "--card-border",
+    "rgba(140, 110, 80, 0.25)",
+  );
+  document.documentElement.style.setProperty("--text-muted", "#7c6853");
+  document.documentElement.style.setProperty("--stroke-dark", "#3a2e2b");
+
   heartEl.style.filter = newHeartFilter;
 
-  // 5. Couleur des chiffres
   numberEls.forEach((el) => {
     el.style.background = newNumPalette;
     el.style.webkitBackgroundClip = "text";
     el.style.webkitTextFillColor = "transparent";
   });
 
-  // 6. Forme & Rebond des cartes
   cardEls.forEach((card, index) => {
     setTimeout(() => {
       card.style.borderRadius = newRadius;

@@ -1,8 +1,9 @@
 :root {
-  /* Police dynamique */
   --current-font: "Fredoka", cursive, sans-serif;
+  --title-size: 2.2rem;
+  --num-size: 2rem;
+  --label-size: 0.8rem;
 
-  /* Palette Crème & Moutarde par défaut */
   --bg-cream: #fbf6ec;
   --bg-blob-1: #f3e5ab;
   --bg-blob-2: #e8d5b7;
@@ -35,7 +36,7 @@ body {
     font-family 0.3s ease;
 }
 
-/* 🌀 Arrière-plan pastel vivant */
+/* 🌀 Arrière-plan vivant */
 body::before,
 body::after {
   content: "";
@@ -45,7 +46,7 @@ body::after {
   border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
   filter: blur(80px);
   z-index: -1;
-  opacity: 0.7;
+  opacity: 0.75;
   animation: float 14s infinite alternate ease-in-out;
   transition: background 0.8s ease;
 }
@@ -81,12 +82,12 @@ body::after {
   max-width: 650px;
 }
 
-/* 🎨 Titre arc-en-ciel */
+/* 🎨 Titre principal dynamique */
 .title {
-  font-size: 1.8rem;
+  font-size: var(--title-size);
   font-weight: 600;
   letter-spacing: 1px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   text-align: center;
 
   background: linear-gradient(
@@ -101,18 +102,37 @@ body::after {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  -webkit-text-stroke: 1.2px var(--stroke-dark);
-  filter: drop-shadow(2px 2px 0px rgba(58, 46, 43, 0.15));
+  -webkit-text-stroke: 1.5px var(--stroke-dark);
+  filter: drop-shadow(2px 3px 0px rgba(58, 46, 43, 0.15));
+  transition:
+    font-size 0.3s ease,
+    all 0.5s ease;
 }
 
-/* ❤️ Conteneur & Animation du Cœur Cliquable */
+.title.metallica-style {
+  font-size: var(--title-size);
+  letter-spacing: 4px;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #cbd5e1 40%,
+    #ef4444 45%,
+    #991b1b 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px #000;
+  filter: drop-shadow(0px 0px 10px rgba(255, 0, 0, 0.8));
+  text-transform: uppercase;
+}
+
 .heart-container {
   margin-bottom: 25px;
 }
 
 #heart {
   display: inline-block;
-  font-size: 2.6rem;
+  font-size: 2.5rem;
   cursor: pointer;
   user-select: none;
   transition:
@@ -172,12 +192,12 @@ body::after {
   width: 100%;
 }
 
-/* 🎨 Cartes avec bordure douce d'origine */
+/* 🎨 Cartes agrandies avec marge interne pour aérer */
 .card {
   background: var(--card-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 24px 10px;
+  padding: 26px 16px; /* Plus d'espace interne */
   min-height: 125px;
   display: flex;
   flex-direction: column;
@@ -188,17 +208,18 @@ body::after {
   border: 2px solid var(--card-border);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
 
-  box-shadow: 0 10px 25px rgba(120, 90, 60, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 
   transition:
     transform 0.3s ease,
-    border-color 0.3s ease,
+    border-color 0.5s ease,
+    background 0.5s ease,
     border-radius 0.5s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(140, 110, 80, 0.5);
+  border-color: var(--stroke-dark);
 }
 
 .card-bounce {
@@ -217,12 +238,13 @@ body::after {
   }
 }
 
-/* 🌈 Chiffres multicolores pastel */
+/* 🌈 Chiffres dynamiques */
 .number {
-  font-size: 2.3rem;
+  font-size: var(--num-size);
   font-weight: 600;
   display: block;
   font-variant-numeric: tabular-nums;
+  line-height: 1.1;
 
   background: linear-gradient(
     135deg,
@@ -234,17 +256,22 @@ body::after {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  -webkit-text-stroke: 1.5px var(--stroke-dark);
-  filter: drop-shadow(2px 2px 0px rgba(58, 46, 43, 0.12));
-  transition: background 0.6s ease;
+  -webkit-text-stroke: 1.2px var(--stroke-dark);
+  filter: drop-shadow(1.5px 1.5px 0px rgba(0, 0, 0, 0.15));
+  transition:
+    font-size 0.3s ease,
+    background 0.6s ease;
 }
 
 .label {
-  font-size: 0.8rem;
+  font-size: var(--label-size);
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-muted);
   font-weight: 600;
-  margin-top: 4px;
+  margin-top: 6px;
   display: block;
+  transition:
+    font-size 0.3s ease,
+    color 0.5s ease;
 }
