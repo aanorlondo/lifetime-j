@@ -109,7 +109,7 @@ body::after {
     all 0.5s ease;
 }
 
-/* ⚡ Style Metallica (6ème clic) */
+/* ⚡ Style Metallica */
 .title.metallica-style {
   font-size: var(--title-size);
   letter-spacing: 4px;
@@ -127,16 +127,16 @@ body::after {
   text-transform: uppercase;
 }
 
-/* 🎷 Style Jazz Chic (10ème clic) */
+/* 🎷 Style Jazz Chic */
 .title.jazz-style {
   font-size: var(--title-size);
   font-style: italic;
   letter-spacing: 2px;
-  background: linear-gradient(135deg, #ffe082 0%, #d4af37 50%, #ffb300 100%);
+  background: linear-gradient(135deg, #fff3c4 0%, #ffd700 50%, #e6b800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 0.8px #000;
-  filter: drop-shadow(0px 0px 12px rgba(212, 175, 55, 0.5));
+  -webkit-text-stroke: 1px var(--stroke-dark);
+  filter: drop-shadow(0px 0px 10px rgba(212, 175, 55, 0.4));
 }
 
 .heart-container {
