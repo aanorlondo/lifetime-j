@@ -304,7 +304,7 @@ heartEl.addEventListener("click", (e) => {
     heartEl.textContent = "🤘";
     heartEl.style.filter = "none";
 
-    titleEl.textContent = "... ton premier growl !";
+    titleEl.textContent = "Depuis ton premier growl !";
     titleEl.className = "title metallica-style";
 
     document.documentElement.style.setProperty("--bg-cream", "#0a0a0c");
