@@ -1,4 +1,4 @@
-const DATE_NAISSANCE = new Date("2026-08-24T12:48:30");
+const DATE_NAISSANCE = new Date("2026-08-24T14:48:30");
 
 // 🔗 Liens audio direct
 const METAL_SOUND_URL =
