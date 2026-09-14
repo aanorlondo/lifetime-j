@@ -118,12 +118,11 @@ document.body.addEventListener(
       startMusicBox();
     }
   },
-  { once: false },
+  { once: false }
 );
 
 // --- 🎨 INTERACTIVITÉ, THEMES, PHRASES & EASTER EGGS ---
 
-// Textes poétiques tournants pour le mode mignon/pastel
 const PASTEL_TITLES = [
   "Depuis ton premier souffle...",
   "L'écho des secondes depuis toi...",
@@ -246,7 +245,6 @@ heartEl.addEventListener("click", (e) => {
     heartEl.textContent = "🎷";
     heartEl.style.filter = "none";
 
-    // Titre dédié au Jazz 🎷
     titleEl.textContent = "Depuis tes premières notes...";
     titleEl.className = "title jazz-style";
 
@@ -255,7 +253,7 @@ heartEl.addEventListener("click", (e) => {
     document.documentElement.style.setProperty("--bg-blob-2", "#182a4a");
     document.documentElement.style.setProperty(
       "--current-font",
-      "'Playfair Display', serif",
+      "'Playfair Display', serif"
     );
     document.documentElement.style.setProperty("--title-size", "2.4rem");
     document.documentElement.style.setProperty("--num-size", "2.1rem");
@@ -263,18 +261,18 @@ heartEl.addEventListener("click", (e) => {
 
     document.documentElement.style.setProperty(
       "--card-bg",
-      "rgba(20, 24, 45, 0.85)",
+      "rgba(20, 24, 45, 0.85)"
     );
     document.documentElement.style.setProperty(
       "--card-border",
-      "rgba(212, 175, 55, 0.4)",
+      "rgba(212, 175, 55, 0.4)"
     );
-    document.documentElement.style.setProperty("--text-muted", "#d4af37");
-    document.documentElement.style.setProperty("--stroke-dark", "#000000");
+    document.documentElement.style.setProperty("--text-muted", "#e2c56a");
+    document.documentElement.style.setProperty("--stroke-dark", "#3a2800");
 
     numberEls.forEach((el) => {
       el.style.background =
-        "linear-gradient(135deg, #ffe082 0%, #d4af37 50%, #ffb300 100%)";
+        "linear-gradient(135deg, #fff3c4 0%, #ffd700 45%, #d4af37 70%, #ffaa00 100%)";
       el.style.webkitBackgroundClip = "text";
       el.style.webkitTextFillColor = "transparent";
     });
@@ -306,8 +304,7 @@ heartEl.addEventListener("click", (e) => {
     heartEl.textContent = "🤘";
     heartEl.style.filter = "none";
 
-    // Titre dédié au Metal 🤘
-    titleEl.textContent = "Depuis ton premier growl !";
+    titleEl.textContent = "... ton premier growl !";
     titleEl.className = "title metallica-style";
 
     document.documentElement.style.setProperty("--bg-cream", "#0a0a0c");
@@ -315,7 +312,7 @@ heartEl.addEventListener("click", (e) => {
     document.documentElement.style.setProperty("--bg-blob-2", "#330000");
     document.documentElement.style.setProperty(
       "--current-font",
-      "'New Rocker', cursive, sans-serif",
+      "'New Rocker', cursive, sans-serif"
     );
     document.documentElement.style.setProperty("--title-size", "2.5rem");
     document.documentElement.style.setProperty("--num-size", "2rem");
@@ -323,11 +320,11 @@ heartEl.addEventListener("click", (e) => {
 
     document.documentElement.style.setProperty(
       "--card-bg",
-      "rgba(18, 18, 22, 0.95)",
+      "rgba(18, 18, 22, 0.95)"
     );
     document.documentElement.style.setProperty(
       "--card-border",
-      "rgba(230, 30, 30, 0.7)",
+      "rgba(230, 30, 30, 0.7)"
     );
     document.documentElement.style.setProperty("--text-muted", "#ff4d4d");
     document.documentElement.style.setProperty("--stroke-dark", "#000000");
@@ -358,8 +355,6 @@ heartEl.addEventListener("click", (e) => {
   titleEl.className = "title";
 
   currentThemeIndex = (currentThemeIndex + 1) % BG_THEMES.length;
-
-  // Changement dynamique du titre pastel
   titleEl.textContent = PASTEL_TITLES[currentThemeIndex % PASTEL_TITLES.length];
 
   const newNumPalette =
@@ -377,21 +372,21 @@ heartEl.addEventListener("click", (e) => {
   document.documentElement.style.setProperty("--current-font", fontConfig.font);
   document.documentElement.style.setProperty(
     "--title-size",
-    fontConfig.titleSize,
+    fontConfig.titleSize
   );
   document.documentElement.style.setProperty("--num-size", fontConfig.numSize);
   document.documentElement.style.setProperty(
     "--label-size",
-    fontConfig.labelSize,
+    fontConfig.labelSize
   );
 
   document.documentElement.style.setProperty(
     "--card-bg",
-    "rgba(255, 250, 240, 0.85)",
+    "rgba(255, 250, 240, 0.85)"
   );
   document.documentElement.style.setProperty(
     "--card-border",
-    "rgba(140, 110, 80, 0.25)",
+    "rgba(140, 110, 80, 0.25)"
   );
   document.documentElement.style.setProperty("--text-muted", "#7c6853");
   document.documentElement.style.setProperty("--stroke-dark", "#3a2e2b");
