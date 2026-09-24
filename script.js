@@ -6,33 +6,62 @@ const METAL_SOUND_URL =
 const JAZZ_SOUND_URL =
   "https://www.myinstants.com/media/sounds/avatar-song-lofi.mp3";
 
-// --- ⏰ COMPTEUR DE TEMPS ---
+// --- ⏰ COMPTEUR DE TEMPS (CORRIGÉ & ROBUSTE) ---
 function updateCounter() {
   const now = new Date();
 
-  let years = now.getFullYear() - DATE_NAISSANCE.getFullYear();
-  let months = now.getMonth() - DATE_NAISSANCE.getMonth();
-
-  let dateDiff = now.getDate() - DATE_NAISSANCE.getDate();
-  if (dateDiff < 0) {
-    months--;
-  }
-  if (months < 0) {
-    years--;
-    months += 12;
+  if (now < DATE_NAISSANCE) {
+    document.getElementById("years").textContent = 0;
+    document.getElementById("months").textContent = 0;
+    document.getElementById("days").textContent = 0;
+    document.getElementById("hours").textContent = 0;
+    document.getElementById("minutes").textContent = 0;
+    document.getElementById("seconds").textContent = 0;
+    return;
   }
 
-  const anchorDate = new Date(DATE_NAISSANCE);
-  anchorDate.setFullYear(anchorDate.getFullYear() + years);
-  anchorDate.setMonth(anchorDate.getMonth() + months);
+  // 1. Calcul des années
+  let cursor = new Date(DATE_NAISSANCE);
+  let years = 0;
+  while (true) {
+    let nextYear = new Date(cursor);
+    nextYear.setFullYear(nextYear.getFullYear() + 1);
+    if (nextYear <= now) {
+      years++;
+      cursor = nextYear;
+    } else {
+      break;
+    }
+  }
 
-  let diffMs = now - anchorDate;
+  // 2. Calcul des mois
+  let months = 0;
+  while (true) {
+    let nextMonth = new Date(cursor);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    if (nextMonth <= now) {
+      months++;
+      cursor = nextMonth;
+    } else {
+      break;
+    }
+  }
 
-  const seconds = Math.floor((diffMs / 1000) % 60);
-  const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
-  const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+  // 3. Calcul du reste en ms (jours, heures, minutes, secondes)
+  let diffMs = now - cursor;
+
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  diffMs -= days * (1000 * 60 * 60 * 24);
 
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  diffMs -= hours * (1000 * 60 * 60);
+
+  const minutes = Math.floor(diffMs / (1000 * 60));
+  diffMs -= minutes * (1000 * 60);
+
+  const seconds = Math.floor(diffMs / 1000);
+
+  // Mise à jour du DOM
   document.getElementById("years").textContent = years;
   document.getElementById("months").textContent = months;
   document.getElementById("days").textContent = days;
@@ -304,7 +333,7 @@ heartEl.addEventListener("click", (e) => {
     heartEl.textContent = "🤘";
     heartEl.style.filter = "none";
 
-    titleEl.textContent = "Depuis ton premier growl !";
+    titleEl.textContent = "... ton premier growl !";
     titleEl.className = "title metallica-style";
 
     document.documentElement.style.setProperty("--bg-cream", "#0a0a0c");
